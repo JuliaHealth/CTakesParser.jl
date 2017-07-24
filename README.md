@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/bcbi/CTakesParser.jl.svg?branch=master)](https://travis-ci.org/bcbi/CTakesParser.jl)
 
-[![Coverage Status](https://coveralls.io/repos/bcbi/CTakesParser.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/mirestrepo/DeepMeSH.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/bcbi/CTakesParser.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/bcbi/CTakesParser.jl?branch=master)
 
-[![codecov.io](http://codecov.io/github/mirestrepo/DeepMeSH.jl/coverage.svg?branch=master)](http://codecov.io/github/mirestrepo/DeepMeSH.jl?branch=master)
+[![codecov.io](http://codecov.io/github/bcbi/CTakesParser.jl/coverage.svg?branch=master)](http://codecov.io/githubbcbi/CTakesParser.jl?branch=master)
 
 Utilities to parse the output of cTAKES 4.0
 
