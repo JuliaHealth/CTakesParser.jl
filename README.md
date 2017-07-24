@@ -41,7 +41,8 @@ julia> head(ctakes_df)
 
 ### Note of running CTAKES
 
-The sample file was obtained from:
+The sample file was obtained using:
+
     * CTakes 4.0
     * Clinical Pipeline
     * Command line interface
