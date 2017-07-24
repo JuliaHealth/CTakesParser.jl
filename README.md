@@ -20,23 +20,23 @@ The first 6 rows of the output DataFrame should look as follows:
 ```
 julia> head(ctakes_df)
 6×7 DataFrames.DataFrame
-│ Row │ textsem             │ refsem        │ id   │ cui        │ negated │ preferred_text                │
-├─────┼─────────────────────┼───────────────┼──────┼────────────┼─────────┼───────────────────────────────┤
-│ 1   │ "MedicationMention" │ "UmlsConcept" │ 7425 │ "C0013227" │ false   │ "Pharmaceutical Preparations" │
-│ 2   │ "MedicationMention" │ "UmlsConcept" │ 7445 │ "C0013227" │ false   │ "Pharmaceutical Preparations" │
-│ 3   │ "MedicationMention" │ "UmlsConcept" │ 7435 │ "C0013227" │ false   │ "Pharmaceutical Preparations" │
-│ 4   │ "MedicationMention" │ "UmlsConcept" │ 7554 │ "C0301532" │ false   │ "Multivitamin preparation"    │
-│ 5   │ "MedicationMention" │ "UmlsConcept" │ 7544 │ "C0301532" │ false   │ "Multivitamin preparation"    │
-│ 6   │ "MedicationMention" │ "UmlsConcept" │ 7564 │ "C0301532" │ false   │ "Multivitamin preparation"    │
+│ Row │ textsem             │ refsem        │ id   │ cui        │ negated │
+├─────┼─────────────────────┼───────────────┼──────┼────────────┼─────────┤
+│ 1   │ "MedicationMention" │ "UmlsConcept" │ 7425 │ "C0013227" │ false   │
+│ 2   │ "MedicationMention" │ "UmlsConcept" │ 7445 │ "C0013227" │ false   │
+│ 3   │ "MedicationMention" │ "UmlsConcept" │ 7435 │ "C0013227" │ false   │
+│ 4   │ "MedicationMention" │ "UmlsConcept" │ 7554 │ "C0301532" │ false   │
+│ 5   │ "MedicationMention" │ "UmlsConcept" │ 7544 │ "C0301532" │ false   │
+│ 6   │ "MedicationMention" │ "UmlsConcept" │ 7564 │ "C0301532" │ false   │
 
-│ Row │ scheme        │
-├─────┼───────────────┤
-│ 1   │ "SNOMEDCT_US" │
-│ 2   │ "SNOMEDCT_US" │
-│ 3   │ "SNOMEDCT_US" │
-│ 4   │ "SNOMEDCT_US" │
-│ 5   │ "SNOMEDCT_US" │
-│ 6   │ "SNOMEDCT_US" │
+│ Row │ preferred_text                │ scheme        │
+├─────┼───────────────────────────────┼───────────────┤
+│ 1   │ "Pharmaceutical Preparations" │ "SNOMEDCT_US" │
+│ 2   │ "Pharmaceutical Preparations" │ "SNOMEDCT_US" │
+│ 3   │ "Pharmaceutical Preparations" │ "SNOMEDCT_US" │
+│ 4   │ "Multivitamin preparation"    │ "SNOMEDCT_US" │
+│ 5   │ "Multivitamin preparation"    │ "SNOMEDCT_US" │
+│ 6   │ "Multivitamin preparation"    │ "SNOMEDCT_US" │
 ```
 
 ### Note of running CTAKES
