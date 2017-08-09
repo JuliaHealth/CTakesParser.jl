@@ -10,7 +10,9 @@ Utilities to parse the output of cTAKES 4.0
 
 ### Installation 
 
+```
 Pkg.clone("https://github.com/bcbi/CTakesParser.jl.git")
+```
 
 ### Example
 
