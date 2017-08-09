@@ -6,7 +6,7 @@
 
 [![codecov.io](http://codecov.io/github/bcbi/CTakesParser.jl/coverage.svg?branch=master)](http://codecov.io/githubbcbi/CTakesParser.jl?branch=master)
 
-Utilities to parse the output of cTAKES 4.0
+Julia utilities to parse the output of cTAKES 4.0
 
 ### Installation 
 
