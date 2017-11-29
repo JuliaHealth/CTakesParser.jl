@@ -47,7 +47,7 @@ julia> head(ctakes_df)
 │ 6   │ "Multivitamin preparation"    │ "SNOMEDCT_US" │
 ```
 
-### Note of running CTAKES
+### Note on running CTAKES
 
 The sample file was obtained using:
 
