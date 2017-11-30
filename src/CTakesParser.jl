@@ -35,7 +35,7 @@ function parse_output_v4(file_in)
 
                 oca = split(e["ontologyConceptArr"], " ")
                 for c in oca
-                    push!(results_df, [n, NA, parse(c), NA, negated, NA, NA])
+                    push!(results_df, [n, "NA", parse(c), "NA", negated, "NA", "NA"])
                 end
             end
         end
