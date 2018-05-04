@@ -1,10 +1,41 @@
 module CTakesParser
 
-
 using EzXML
 using DataFrames
+using CSV
 
-export parse_output_v4
+export parse_output_dir
+
+
+"""
+    parse_output_dir(dir_in, dir_out)
+Parse all notes in `dir_in` and save the .csv files corresponding to the
+parsed dataframe into `dir_out`
+"""
+function parse_output_dir(dir_in, dir_out)
+    
+    if !isdir(dir_in)
+        error("Input directory does not exist")
+    end
+
+    if !isdir(dir_out)
+        mkpath(dir_out)
+    end
+
+    files = readdir(dir_in)
+
+    for f in files
+        if !isfile(f)
+            continue
+        end
+        df = parse_output_v4(dir_in*f)
+        filename = split(basename(f), ".")[1]
+        file_out  = string(dir_out, filename, ".csv")
+        CSV.write(file_out, df)
+    end
+    
+end
+
 
 """
     parse_output_v4(file)
@@ -16,7 +47,7 @@ UMLS CONCEPT | SECTION | POSITION-BEGIN | POSITION-END | NEGATION
 function parse_output_v4(file_in)
        
     if !isfile(file_in)
-        error("parse_output_v4: No input file")
+        error("No input file: ", file_in)
     end
 
     xdoc = readxml(file_in)
