@@ -28,9 +28,8 @@ function parse_output_v4(file_in)
     for (i,e) in enumerate(eachelement(xroot))
         
         if namespace(e) == "http:///org/apache/ctakes/typesystem/type/textsem.ecore"
-            if haskey(e, "ontologyConceptArr")
-            
-                n = name(e)
+            if haskey(e, "ontologyConceptArr")      
+                n = nodename(e)
                 negated = !(parse(e["polarity"]) > 0)
 
                 oca = split(e["ontologyConceptArr"], " ")
@@ -41,7 +40,7 @@ function parse_output_v4(file_in)
         end
 
         if namespace(e) =="http:///org/apache/ctakes/typesystem/type/refsem.ecore" 
-            n = name(e)
+            n = nodename(e)
             scheme = e["codingScheme"]
             cui = e["cui"]
             text = e["preferredText"]
