@@ -25,7 +25,7 @@ function parse_output_dir(dir_in, dir_out)
     files = readdir(dir_in)
 
     for f in files
-        if !isfile(f)
+        if !isfile(dir_in*f)
             continue
         end
         df = parse_output_v4(dir_in*f)
