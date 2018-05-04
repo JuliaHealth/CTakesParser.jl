@@ -1,25 +1,34 @@
 # CTakesParser.jl
 
-[![Build Status](https://travis-ci.org/bcbi/CTakesParser.jl.svg?branch=master)](https://travis-ci.org/bcbi/CTakesParser.jl)
-
-<!--[![Coverage Status](https://coveralls.io/repos/bcbi/CTakesParser.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/bcbi/CTakesParser.jl?branch=master) -->
-
-[![codecov.io](http://codecov.io/github/bcbi/CTakesParser.jl/coverage.svg?branch=master)](http://codecov.io/githubbcbi/CTakesParser.jl?branch=master)
+| Travis CI | Coverage | License | 
+|-----------|----------|---------|
+|[![Build Status](https://travis-ci.org/bcbi/CTakesParser.jl.svg?branch=master)](https://travis-ci.org/bcbi/CTakesParser.jl)|[![codecov.io](http://codecov.io/github/bcbi/CTakesParser.jl/coverage.svg?branch=master)](http://codecov.io/githubbcbi/CTakesParser.jl?branch=master)|[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bcbi/CTakesParser.jl/master/LICENSE.md)|
 
 Julia utilities to parse the output of cTAKES 4.0
 
-### Installation 
+## Installation 
 
 ```
 Pkg.clone("https://github.com/bcbi/CTakesParser.jl.git")
 ```
 
-### Example
+## Examples
+
+### Parse all notes in a directory and save .csv output to disk
+
+```
+dir_in = "./notes_in/"
+dir_out = "./notes_out/"
+
+parse_output_dir(dir_in, dir_out)
+```
+
+### Parse individual file
 
 The following example parses and returns a DataFrame using the the sample ctakes output file that is provided in the test directory.
 
 ```
-file_in = PATH_TO_TESTS "/mts_sample_note_97_1152.txt.xmi"
+file_in = PATH_TO_TESTS "/notes_in/mts_sample_note_97_1152.txt.xmi"
 ctakes_df = parse_output_v4(file_in)
 ```
 
