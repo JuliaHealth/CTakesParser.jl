@@ -55,8 +55,7 @@ function parse_output_v4(file_in)
 
     results_df = DataFrame(textsem = Vector{String}(), refsem = Vector{String}(), id = Vector{Int64}(), cui=Vector{String}(),
                            negated = Vector{Bool}(), preferred_text=Vector{String}(), scheme = Vector{String}(),
-                           part_of_speech = Vector{String}(), tui = Vector{String}(), score = Vector{Float64}(),
-                           pos_start = Vector{Int64}(), pos_end = Vector{Int64}())
+                           tui = Vector{String}(), score = Vector{Float64}(), pos_start = Vector{Int64}(), pos_end = Vector{Int64}())
 
     for (i,e) in enumerate(eachelement(xroot))
 
@@ -69,7 +68,7 @@ function parse_output_v4(file_in)
 
                 oca = split(e["ontologyConceptArr"], " ")
                 for c in oca
-                    push!(results_df, [n, "NA", parse(c), "NA", negated, "NA", "NA", "NA", "NA", NaN, pos_start, pos_end])
+                    push!(results_df, [n, "NA", parse(c), "NA", negated, "NA", "NA", "NA", NaN, pos_start, pos_end])
                 end
             end
         end
@@ -91,11 +90,8 @@ function parse_output_v4(file_in)
             results_df[(results_df[:id].== id), :scheme] = scheme
             results_df[(results_df[:id].== id), :tui] = tui
             results_df[(results_df[:id].== id), :score] = score
-
-
         end
     end
-
     results_df
 end
 
