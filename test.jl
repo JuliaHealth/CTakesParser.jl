@@ -1,11 +1,12 @@
 count = 0
 for (i,e) in enumerate(eachelement(xroot))
    if namespace(e) == "http:///org/apache/ctakes/typesystem/type/syntax.ecore"
-      if nodename(e) == "ConllDependencyNode"
-          if e["id"] == "0"
-               count += 1
-          end
-          println(e)
+      if nodename(e) == "WordToken"
+          postag = e["partOfSpeech"]
+          pos_start = e["begin"]
+          pos_end = e["end"]
+
+          prinln(postag)
       end
    end
 end

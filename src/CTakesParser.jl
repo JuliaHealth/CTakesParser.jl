@@ -57,6 +57,8 @@ function parse_output_v4(file_in)
                            negated = Vector{Bool}(), preferred_text=Vector{String}(), scheme = Vector{String}(),
                            tui = Vector{String}(), score = Vector{Float64}(), pos_start = Vector{Int64}(), pos_end = Vector{Int64}())
 
+    pos_df = DataFrame(pos_start = Vector{Int64}(), pos_end = Vector{Int64}(), part_of_speech = Vector{String}())
+
     for (i,e) in enumerate(eachelement(xroot))
 
         if namespace(e) == "http:///org/apache/ctakes/typesystem/type/textsem.ecore"
@@ -91,8 +93,19 @@ function parse_output_v4(file_in)
             results_df[(results_df[:id].== id), :tui] = tui
             results_df[(results_df[:id].== id), :score] = score
         end
+
+        if namespace(e) == "http:///org/apache/ctakes/typesystem/type/syntax.ecore"
+           if nodename(e) == "WordToken"
+               postag = e["partOfSpeech"]
+               pos_start = parse(e["begin"])
+               pos_end = parse(e["end"])
+               append!(pos_df, DataFrame(pos_start = pos_start, pos_end = pos_end, part_of_speech = postag ))
+
+           end
+        end
     end
-    results_df
+    out_df = join(results_df, pos_df, on = [:pos_start, :pos_end], kind = :left)
+    out_df
 end
 
 end # module
