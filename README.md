@@ -1,12 +1,12 @@
 # CTakesParser.jl
 
-| Travis CI | Coverage | License | 
+| Travis CI | Coverage | License |
 |-----------|----------|---------|
 |[![Build Status](https://travis-ci.org/bcbi/CTakesParser.jl.svg?branch=master)](https://travis-ci.org/bcbi/CTakesParser.jl)|[![codecov.io](http://codecov.io/github/bcbi/CTakesParser.jl/coverage.svg?branch=master)](http://codecov.io/githubbcbi/CTakesParser.jl?branch=master)|[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bcbi/CTakesParser.jl/master/LICENSE.md)|
 
 Julia utilities to parse the output of cTAKES 4.0
 
-## Installation 
+## Installation
 
 ```
 Pkg.clone("https://github.com/bcbi/CTakesParser.jl.git")
@@ -32,28 +32,21 @@ file_in = PATH_TO_TESTS "/notes_in/mts_sample_note_97_1152.txt.xmi"
 ctakes_df = parse_output_v4(file_in)
 ```
 
-The first 6 rows of the output DataFrame should look as follows:
+The first 8 rows of the output DataFrame should look as follows:
 
 ```
 julia> head(ctakes_df)
-6×7 DataFrames.DataFrame
-│ Row │ textsem             │ refsem        │ id   │ cui        │ negated │
-├─────┼─────────────────────┼───────────────┼──────┼────────────┼─────────┤
-│ 1   │ "MedicationMention" │ "UmlsConcept" │ 7425 │ "C0013227" │ false   │
-│ 2   │ "MedicationMention" │ "UmlsConcept" │ 7445 │ "C0013227" │ false   │
-│ 3   │ "MedicationMention" │ "UmlsConcept" │ 7435 │ "C0013227" │ false   │
-│ 4   │ "MedicationMention" │ "UmlsConcept" │ 7554 │ "C0301532" │ false   │
-│ 5   │ "MedicationMention" │ "UmlsConcept" │ 7544 │ "C0301532" │ false   │
-│ 6   │ "MedicationMention" │ "UmlsConcept" │ 7564 │ "C0301532" │ false   │
-
-│ Row │ preferred_text                │ scheme        │
-├─────┼───────────────────────────────┼───────────────┤
-│ 1   │ "Pharmaceutical Preparations" │ "SNOMEDCT_US" │
-│ 2   │ "Pharmaceutical Preparations" │ "SNOMEDCT_US" │
-│ 3   │ "Pharmaceutical Preparations" │ "SNOMEDCT_US" │
-│ 4   │ "Multivitamin preparation"    │ "SNOMEDCT_US" │
-│ 5   │ "Multivitamin preparation"    │ "SNOMEDCT_US" │
-│ 6   │ "Multivitamin preparation"    │ "SNOMEDCT_US" │
+8×17 DataFrames.DataFrame
+│ Row │ textsem               │ refsem      │ id    │ pos_start │ pos_end │ cui      │ negated │ preferred_text              │ scheme      │ tui  │ score │ confidence │ uncertainty │ conditional │ generic │ subject │ part_of_speech │
+├─────┼───────────────────────┼─────────────┼───────┼───────────┼─────────┼──────────┼─────────┼─────────────────────────────┼─────────────┼──────┼───────┼────────────┼─────────────┼─────────────┼─────────┼─────────┼────────────────┤
+│ 1   │ MedicationMention     │ UmlsConcept │ 7425  │ 761       │ 772     │ C0013227 │ false   │ Pharmaceutical Preparations │ SNOMEDCT_US │ T121 │ 0.0   │ 0.0        │ 0           │ false       │ false   │ patient │ NNS            │
+│ 2   │ MedicationMention     │ UmlsConcept │ 7445  │ 761       │ 772     │ C0013227 │ false   │ Pharmaceutical Preparations │ SNOMEDCT_US │ T121 │ 0.0   │ 0.0        │ 0           │ false       │ false   │ patient │ NNS            │
+│ 3   │ MedicationMention     │ UmlsConcept │ 7435  │ 761       │ 772     │ C0013227 │ false   │ Pharmaceutical Preparations │ SNOMEDCT_US │ T121 │ 0.0   │ 0.0        │ 0           │ false       │ false   │ patient │ NNS            │
+│ 4   │ MedicationMention     │ UmlsConcept │ 7554  │ 774       │ 787     │ C0301532 │ false   │ Multivitamin preparation    │ SNOMEDCT_US │ T127 │ 0.0   │ 0.0        │ 0           │ false       │ false   │ patient │ NNS            │
+│ 5   │ MedicationMention     │ UmlsConcept │ 7544  │ 774       │ 787     │ C0301532 │ false   │ Multivitamin preparation    │ SNOMEDCT_US │ T109 │ 0.0   │ 0.0        │ 0           │ false       │ false   │ patient │ NNS            │
+│ 6   │ MedicationMention     │ UmlsConcept │ 7564  │ 774       │ 787     │ C0301532 │ false   │ Multivitamin preparation    │ SNOMEDCT_US │ T121 │ 0.0   │ 0.0        │ 0           │ false       │ false   │ patient │ NNS            │
+│ 7   │ MedicationMention     │ UmlsConcept │ 7921  │ 792       │ 799     │ C0006675 │ false   │ Calcium                     │ SNOMEDCT_US │ T121 │ 0.0   │ 0.0        │ 0           │ false       │ false   │ patient │ NN             │
+│ 8   │ MedicationMention     │ UmlsConcept │ 7891  │ 792       │ 799     │ C0006675 │ false   │ Calcium                     │ RXNORM      │ T123 │ 0.0   │ 0.0        │ 0           │ false       │ false   │ patient │ NN             │
 ```
 
 ### Note on running CTAKES
