@@ -53,11 +53,17 @@ function parse_output_v4(file_in)
     xdoc = readxml(file_in)
     xroot = root(xdoc)
 
-    results_df = DataFrame(textsem = Vector{String}(), refsem = Vector{String}(), id = Vector{Int64}(), cui=Vector{String}(),
-                           negated = Vector{Bool}(), preferred_text=Vector{String}(), scheme = Vector{String}(),
-                           tui = Vector{String}(), score = Vector{Float64}(), pos_start = Vector{Int64}(), pos_end = Vector{Int64}())
+    results_df = DataFrame(textsem = Vector{String}(), refsem = Vector{String}(),
+                           id = Vector{Int64}(), pos_start = Vector{Int64}(),
+                           pos_end = Vector{Int64}(), cui=Vector{String}(),
+                           negated = Vector{Bool}(), preferred_text=Vector{String}(),
+                           scheme = Vector{String}(), tui = Vector{String}(),
+                           score = Vector{Float64}(), confidence = Vector{Float64}(),
+                           uncertainty = Vector{Int64}(), conditional = Vector{Bool}(),
+                           generic = Vector{Bool}(), subject = Vector{String}())
 
-    pos_df = DataFrame(pos_start = Vector{Int64}(), pos_end = Vector{Int64}(), part_of_speech = Vector{String}())
+    pos_df = DataFrame(pos_start = Vector{Int64}(), pos_end = Vector{Int64}(),
+                       part_of_speech = Vector{String}())
 
     for (i,e) in enumerate(eachelement(xroot))
 
@@ -68,9 +74,17 @@ function parse_output_v4(file_in)
                 pos_start = parse(e["begin"])
                 pos_end = parse(e["end"])
 
+                confidence = parse(e["confidence"])
+                uncertainty = parse(e["uncertainty"])
+                conditional = parse(e["conditional"])
+                generic = parse(e["generic"])
+                subject = e["subject"]
+
                 oca = split(e["ontologyConceptArr"], " ")
                 for c in oca
-                    push!(results_df, [n, "NA", parse(c), "NA", negated, "NA", "NA", "NA", NaN, pos_start, pos_end])
+                    push!(results_df, [n, "NA", parse(c), pos_start, pos_end, "NA",
+                                       negated, "NA", "NA", "NA", NaN, confidence,
+                                       uncertainty, conditional, generic, subject ])
                 end
             end
         end
@@ -95,11 +109,13 @@ function parse_output_v4(file_in)
         end
 
         if namespace(e) == "http:///org/apache/ctakes/typesystem/type/syntax.ecore"
-           if nodename(e) == "WordToken"
-               postag = e["partOfSpeech"]
+           if nodename(e) == "ConllDependencyNode" && e["id"] != "0"
+               postag = e["postag"]
                pos_start = parse(e["begin"])
                pos_end = parse(e["end"])
-               append!(pos_df, DataFrame(pos_start = pos_start, pos_end = pos_end, part_of_speech = postag ))
+
+               append!(pos_df, DataFrame(pos_start = pos_start, pos_end = pos_end,
+                       part_of_speech = postag))
 
            end
         end
