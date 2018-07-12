@@ -63,7 +63,7 @@ function parse_output_v4(file_in)
                            generic = Vector{Bool}(), subject = Vector{String}())
 
     pos_df = DataFrame(pos_start = Vector{Int64}(), pos_end = Vector{Int64}(),
-                       part_of_speech = Vector{String}())
+                       part_of_speech = Vector{String}(), true_text = Vector{String}())
 
     for (i,e) in enumerate(eachelement(xroot))
 
@@ -113,9 +113,10 @@ function parse_output_v4(file_in)
                postag = e["postag"]
                pos_start = parse(e["begin"])
                pos_end = parse(e["end"])
+               text = e["form"]
 
                append!(pos_df, DataFrame(pos_start = pos_start, pos_end = pos_end,
-                       part_of_speech = postag))
+                       part_of_speech = postag, true_text = text))
 
            end
         end
