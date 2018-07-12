@@ -11,6 +11,7 @@ export parse_output_dir
     parse_output_dir(dir_in, dir_out)
 Parse all notes in `dir_in` and save the .csv files corresponding to the
 parsed dataframe into `dir_out`
+Note that dir_in and dir_out are expected to end in \
 """
 function parse_output_dir(dir_in, dir_out)
 
@@ -24,8 +25,13 @@ function parse_output_dir(dir_in, dir_out)
 
     files = readdir(dir_in)
 
+    info("--------------------------------------------------------")
+    info("Parsing ", size(files), " files")
+    info("--------------------------------------------------------")
+
     for f in files
         if !isfile(dir_in*f)
+            warn(dir_in*f, "is not a file")
             continue
         end
         df = parse_output_v4(dir_in*f)
