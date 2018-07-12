@@ -63,7 +63,7 @@ function parse_output_v4(file_in)
                            generic = Vector{Bool}(), subject = Vector{String}())
 
     pos_df = DataFrame(pos_start = Vector{Int64}(), pos_end = Vector{Int64}(),
-                       part_of_speech = Vector{String}(), true_text = Vector{String}())
+                       part_of_speech = Vector{String}(), text = Vector{String}())
 
     for (i,e) in enumerate(eachelement(xroot))
 
@@ -116,13 +116,32 @@ function parse_output_v4(file_in)
                text = e["form"]
 
                append!(pos_df, DataFrame(pos_start = pos_start, pos_end = pos_end,
-                       part_of_speech = postag, true_text = text))
+                       part_of_speech = postag, text = text))
 
            end
         end
     end
-    out_df = join(results_df, pos_df, on = [:pos_start, :pos_end], kind = :left)
-    out_df
+
+    true_text = String[]
+
+    for row in eachrow(results_df)
+        pos_start = row[:pos_start]
+        pos_end = row[:pos_end]
+
+        text_array = String[]
+
+        for row_ in eachrow(pos_df)
+            if pos_start <= row_[:pos_start] < pos_end
+                push!(text_array, row_[:text])
+            end
+        end
+        push!(true_text, join(text_array, " "))
+    end
+
+    pos_df_subset = pos_df[:, [:part_of_speech, :pos_start]]
+    final_df = join(results_df, pos_df_subset, on = [:pos_start], kind = :left)
+    final_df[:true_text] = true_text
+    final_df
 end
 
 end # module
