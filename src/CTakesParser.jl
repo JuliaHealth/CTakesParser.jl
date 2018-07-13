@@ -69,14 +69,14 @@ function parse_output_v4(file_in)
     xdoc = readxml(file_in)
     xroot = root(xdoc)
 
-    results_df = DataFrame(textsem = Vector{String}(), refsem = Vector{String}(),
-                           id = Vector{Int64}(), pos_start = Vector{Int64}(),
-                           pos_end = Vector{Int64}(), cui=Vector{String}(),
-                           negated = Vector{Bool}(), preferred_text=Vector{String}(),
-                           scheme = Vector{String}(), tui = Vector{String}(),
-                           score = Vector{Float64}(), confidence = Vector{Float64}(),
-                           uncertainty = Vector{Int64}(), conditional = Vector{Bool}(),
-                           generic = Vector{Bool}(), subject = Vector{String}())
+    results_df = DataFrame(textsem = Vector{Union{String,Missing}}(), refsem = Vector{Union{String,Missing}}(),
+                           id = Vector{Union{Int64,Missing}}(), pos_start = Vector{Union{Int64,Missing}}(),
+                           pos_end = Vector{Union{Int64,Missing}}(), cui=Vector{Union{String,Missing}}(),
+                           negated = Vector{Union{Bool,Missing}}(), preferred_text=Vector{Union{String,Missing}}(),
+                           scheme = Vector{Union{String,Missing}}(), tui = Vector{Union{String,Missing}}(),
+                           score = Vector{Union{Float64,Missing}}(), confidence = Vector{Union{Float64,Missing}}(),
+                           uncertainty = Vector{Union{Int64,Missing}}(), conditional = Vector{Union{Bool,Missing}}(),
+                           generic = Vector{Union{Bool,Missing}}(), subject = Vector{Union{String,Missing}}())
 
     pos_df = DataFrame(pos_start = Vector{Int64}(), pos_end = Vector{Int64}(),
                        part_of_speech = Vector{String}(), text = Vector{String}())
@@ -127,11 +127,14 @@ function parse_output_v4(file_in)
 
         if namespace(e) == "http:///org/apache/ctakes/typesystem/type/syntax.ecore"
            if nodename(e) == "ConllDependencyNode" && e["id"] != "0"
-               postag = e["postag"]
-               pos_start = parse(e["begin"])
-               pos_end = parse(e["end"])
-               text = e["form"]
-
+               postag = get(e, "postag", missing)
+               pos_start = parse(get(e, "begin", missing))
+               pos_end = parse(get(e, "end", missing))
+               text = get(e, "form", missing)
+               println(typeof(postag))
+               println(typeof(pos_start))
+               println(typeof(pos_end))
+               println(typeof(text))
                append!(pos_df, DataFrame(pos_start = pos_start, pos_end = pos_end,
                        part_of_speech = postag, text = text))
 
