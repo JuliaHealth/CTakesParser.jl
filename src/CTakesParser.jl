@@ -3,9 +3,19 @@ module CTakesParser
 using EzXML
 using DataFrames
 using CSV
+using Missings
 
 export parse_output_dir
 
+import Base.get
+
+function get(node::EzXML.Node, key::ANY, default::ANY)
+    try
+        getindex(node, key)
+    catch
+        default
+    end
+end
 
 """
     parse_output_dir(dir_in, dir_out)
@@ -76,15 +86,16 @@ function parse_output_v4(file_in)
         if namespace(e) == "http:///org/apache/ctakes/typesystem/type/textsem.ecore"
             if haskey(e, "ontologyConceptArr")
                 n = nodename(e)
-                negated = !(parse(e["polarity"]) > 0)
-                pos_start = parse(e["begin"])
-                pos_end = parse(e["end"])
+                polarity = parse(get(e, "polarity", NaN))
+                negated = !(polarity > 0)
+                pos_start = parse(get(e, "begin", missing))
+                pos_end = parse(get(e, "end", missing))
 
-                confidence = parse(e["confidence"])
-                uncertainty = parse(e["uncertainty"])
-                conditional = parse(e["conditional"])
-                generic = parse(e["generic"])
-                subject = e["subject"]
+                confidence = parse(get(e, "confidence", missing))
+                uncertainty = parse(get(e, "uncertainty", missing))
+                conditional = parse(get(e, "conditional", missing))
+                generic = parse(get(e, "generic", missing))
+                subject = get(e, "subject", missing)
 
                 oca = split(e["ontologyConceptArr"], " ")
                 for c in oca
@@ -97,12 +108,12 @@ function parse_output_v4(file_in)
 
         if namespace(e) == "http:///org/apache/ctakes/typesystem/type/refsem.ecore"
             n = nodename(e)
-            scheme = e["codingScheme"]
-            cui = e["cui"]
-            text = e["preferredText"]
-            id = parse(e["xmi:id"])
-            tui = e["tui"]
-            score = parse(e["score"])
+            scheme = get(e, "codingScheme", missing)
+            cui = get(e, "cui", missing)
+            text = get(e, "preferredText", missing)
+            id = parse(get(e, "xmi:id", missing))
+            tui = get(e, "tui", missing)
+            score = parse(get(e, "score", missing))
 
 
             # results_df[results_df[:id].== id, [:refsem, :cui, :preferred_text, :scheme]] = []
