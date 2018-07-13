@@ -47,7 +47,7 @@ function parse_output_dir(dir_in, dir_out)
         df = parse_output_v4(dir_in*f)
         filename = split(basename(f), ".")[1]
         file_out  = string(dir_out, filename, ".csv")
-        CSV.write(file_out, df)
+        CSV.write(file_out, df, missingstring="NULL")
     end
 
 end
@@ -78,8 +78,8 @@ function parse_output_v4(file_in)
                            uncertainty = Vector{Union{Int64,Missing}}(), conditional = Vector{Union{Bool,Missing}}(),
                            generic = Vector{Union{Bool,Missing}}(), subject = Vector{Union{String,Missing}}())
 
-    pos_df = DataFrame(pos_start = Vector{Int64}(), pos_end = Vector{Int64}(),
-                       part_of_speech = Vector{String}(), text = Vector{String}())
+    pos_df = DataFrame(pos_start = Vector{Union{Int64,Missing}}(), pos_end = Vector{Union{Int64,Missing}}(),
+                       part_of_speech = Vector{Union{String,Missing}}(), text = Vector{Union{String,Missing}}())
 
     for (i,e) in enumerate(eachelement(xroot))
 
@@ -99,8 +99,8 @@ function parse_output_v4(file_in)
 
                 oca = split(e["ontologyConceptArr"], " ")
                 for c in oca
-                    push!(results_df, [n, "NA", parse(c), pos_start, pos_end, "NA",
-                                       negated, "NA", "NA", "NA", NaN, confidence,
+                    push!(results_df, [n, missing, parse(c), pos_start, pos_end, missing,
+                                       negated, missing, missing, missing, missing, confidence,
                                        uncertainty, conditional, generic, subject ])
                 end
             end
@@ -132,8 +132,7 @@ function parse_output_v4(file_in)
                pos_end = parse(get(e, "end", missing))
                text = get(e, "form", missing)
 
-               append!(pos_df, DataFrame(pos_start = pos_start, pos_end = pos_end,
-                       part_of_speech = postag, text = text))
+               push!(pos_df, [pos_start, pos_end, postag, text])
 
            end
         end
