@@ -131,10 +131,7 @@ function parse_output_v4(file_in)
                pos_start = parse(get(e, "begin", missing))
                pos_end = parse(get(e, "end", missing))
                text = get(e, "form", missing)
-               println(typeof(postag))
-               println(typeof(pos_start))
-               println(typeof(pos_end))
-               println(typeof(text))
+
                append!(pos_df, DataFrame(pos_start = pos_start, pos_end = pos_end,
                        part_of_speech = postag, text = text))
 
