@@ -25,8 +25,6 @@ parsed dataframe into `dir_out`
 Note that dir_in and dir_out are expected to end in \
 """
 function parse_output_dir(dir_in, dir_out)
-    Logging.configure(output=open(dir_out*"logfile.log", "a"), level=DEBUG)
-
     if !isdir(dir_in)
         error("Input directory does not exist")
     end
@@ -34,6 +32,8 @@ function parse_output_dir(dir_in, dir_out)
     if !isdir(dir_out)
         mkpath(dir_out)
     end
+    
+    Logging.configure(output=open(dir_out*"logfile.log", "a"), level=DEBUG)
 
     files = readdir(dir_in)
     n = size(files)[1]
