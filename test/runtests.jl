@@ -2,6 +2,9 @@ using CTakesParser
 using Base.Test
 using DataFrames
 using CSV
+using Logging
+
+Logging.configure(output=open("logfile.log", "a"), level=DEBUG)
 
 function test_output_df(df)
     @test nrow(df) == 157
@@ -12,7 +15,6 @@ function test_output_df(df)
 end
 
 function runtests()
-
     #test parsing individual file
     @testset "Parse file" begin
         println("-----------------------------------------")

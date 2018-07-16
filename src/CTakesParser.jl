@@ -34,20 +34,26 @@ function parse_output_dir(dir_in, dir_out)
     end
 
     files = readdir(dir_in)
+    n = size(files)[1]
 
-    info("--------------------------------------------------------")
-    info("Parsing ", size(files), " files")
+    info("------------------- ", Dates.format(now(), "dd-mm-yyyy HH:MM"), " -------------------")
+    info("Parsing ", n, " files from $dir_in")
     info("--------------------------------------------------------")
 
-    for f in files
+    for (i, f) in enumerate(files)
         if !isfile(dir_in*f)
             warn(dir_in*f, "is not a file")
             continue
         end
-        df = parse_output_v4(dir_in*f)
-        filename = split(basename(f), ".")[1]
-        file_out  = string(dir_out, filename, ".csv")
-        CSV.write(file_out, df, missingstring="NULL")
+        info(" - Parsing file $i of $n: ", f)
+        try
+            df = parse_output_v4(dir_in*f)
+            filename = split(basename(f), ".")[1]
+            file_out  = string(dir_out, filename, ".csv")
+            CSV.write(file_out, df, missingstring="NULL")
+        catch
+            warn("Could not parse file $dir_in$f")
+        end
     end
 
 end

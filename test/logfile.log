@@ -1,0 +1,7 @@
+16-Jul 10:23:07:INFO:root:------------------- 16-07-2018 10:23 -------------------
+16-Jul 10:23:07:INFO:root:Parsing 3 files from /Users/fgelin/bcbi/julia-local-packages/CTakesParser.jl/test/notes_in/
+16-Jul 10:23:07:INFO:root:--------------------------------------------------------
+16-Jul 10:23:07:INFO:root: - Parsing file 1 of 3: mts_sample_note_97_1152.txt.xmi
+16-Jul 10:23:09:INFO:root: - Parsing file 2 of 3: mts_sample_note_97_1152_2.txt.xmi
+16-Jul 10:23:09:WARNING:root:Could not parse file /Users/fgelin/bcbi/julia-local-packages/CTakesParser.jl/test/notes_in/mts_sample_note_97_1152_2.txt.xmi
+16-Jul 10:23:09:INFO:root: - Parsing file 3 of 3: test_no_preferred_text.xmi
