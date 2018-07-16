@@ -25,7 +25,7 @@ parsed dataframe into `dir_out`
 Note that dir_in and dir_out are expected to end in \
 """
 function parse_output_dir(dir_in, dir_out)
-    Logging.configure(output=open("$dir_out/logfile.log", "a"))
+    Logging.configure(output=open(dir_out*"logfile.log", "a"), level=DEBUG)
 
     if !isdir(dir_in)
         error("Input directory does not exist")
