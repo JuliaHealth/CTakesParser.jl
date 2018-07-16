@@ -4,6 +4,7 @@ using EzXML
 using DataFrames
 using CSV
 using Missings
+using Logging
 
 export parse_output_dir
 
@@ -24,6 +25,7 @@ parsed dataframe into `dir_out`
 Note that dir_in and dir_out are expected to end in \
 """
 function parse_output_dir(dir_in, dir_out)
+    Logging.configure(output=open("$dir_out/logfile.log", "a"))
 
     if !isdir(dir_in)
         error("Input directory does not exist")

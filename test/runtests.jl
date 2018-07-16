@@ -4,8 +4,6 @@ using DataFrames
 using CSV
 using Logging
 
-Logging.configure(output=open("logfile.log", "a"), level=DEBUG)
-
 function test_output_df(df)
     @test nrow(df) == 157
     # @test sum(completecases(df)) == 134
@@ -32,7 +30,7 @@ function runtests()
         parse_output_dir(dir_in, dir_out)
 
         #read output files and test
-        for f in readdir(dir_out)
+        for f in [x for x in readdir(dir_out) if !endswith(x, ".log")]
             println("File: ", f)
             df =  CSV.read(dir_out*f)
             test_output_df(df)
