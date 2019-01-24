@@ -1,8 +1,7 @@
 using CTakesParser
-using Base.Test
+using Test
 using DataFrames
 using CSV
-using Logging
 
 function test_output_df(df)
     @test nrow(df) == 157
