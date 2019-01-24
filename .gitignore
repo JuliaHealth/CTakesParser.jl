@@ -5,3 +5,4 @@ deps/deps.jl
 test/notes_out/
 test.jl
 .log
+Manifest.toml

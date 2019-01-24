@@ -3,14 +3,14 @@ module CTakesParser
 using EzXML
 using DataFrames
 using CSV
-using Missings
+using Dates
 using Logging
 
 export parse_output_dir
 
 import Base.get
 
-function get(node::EzXML.Node, key::ANY, default::ANY)
+function get(node::EzXML.Node, key::String, default)
     try
         getindex(node, key)
     catch
@@ -22,7 +22,7 @@ end
     parse_output_dir(dir_in, dir_out)
 Parse all notes in `dir_in` and save the .csv files corresponding to the
 parsed dataframe into `dir_out`
-Note that dir_in and dir_out are expected to end in \
+Note that dir_in and dir_out are expected to end in /
 """
 function parse_output_dir(dir_in, dir_out)
     if !isdir(dir_in)
@@ -33,31 +33,34 @@ function parse_output_dir(dir_in, dir_out)
         mkpath(dir_out)
     end
     
-    Logging.configure(output=open(dir_out*"logfile.log", "a"), level=DEBUG)
+    io = open(dir_out*"logfile.log", "w+")
+    logger = SimpleLogger(io)
+    global_logger(logger)
 
     files = readdir(dir_in)
     n = size(files)[1]
 
-    info("------------------- ", Dates.format(now(), "dd-mm-yyyy HH:MM"), " -------------------")
-    info("Parsing ", n, " files from $dir_in")
-    info("--------------------------------------------------------")
+    @info("------------------- ", Dates.format(now(), "dd-mm-yyyy HH:MM"), " -------------------")
+    @info("Parsing ", n, " files from $dir_in")
+    @info("--------------------------------------------------------")
 
     for (i, f) in enumerate(files)
         if !isfile(dir_in*f)
-            warn(dir_in*f, "is not a file")
+            @warn(dir_in*f, "is not a file")
             continue
         end
-        info(" - Parsing file $i of $n: ", f)
+        @info(" - Parsing file $i of $n: ", f)
         try
             df = parse_output_v4(dir_in*f)
             filename = split(basename(f), ".")[1]
             file_out  = string(dir_out, filename, ".csv")
             CSV.write(file_out, df, missingstring="NULL")
         catch
-            warn("Could not parse file $dir_in$f")
+            @warn("Could not parse file $dir_in$f")
         end
     end
 
+    close(io)
 end
 
 
@@ -94,20 +97,20 @@ function parse_output_v4(file_in)
         if namespace(e) == "http:///org/apache/ctakes/typesystem/type/textsem.ecore"
             if haskey(e, "ontologyConceptArr")
                 n = nodename(e)
-                polarity = parse(get(e, "polarity", NaN))
+                polarity = parse(Int, get(e, "polarity", "0"))
                 negated = !(polarity > 0)
-                pos_start = parse(get(e, "begin", missing))
-                pos_end = parse(get(e, "end", missing))
+                pos_start = parse(Int, get(e, "begin", missing))
+                pos_end = parse(Int, get(e, "end", missing))
 
-                confidence = parse(get(e, "confidence", missing))
-                uncertainty = parse(get(e, "uncertainty", missing))
-                conditional = parse(get(e, "conditional", missing))
-                generic = parse(get(e, "generic", missing))
+                confidence = parse(Float64, get(e, "confidence", missing))
+                uncertainty = parse(Float64, get(e, "uncertainty", missing))
+                conditional = parse(Bool, get(e, "conditional", missing))
+                generic = parse(Bool, get(e, "generic", missing))
                 subject = get(e, "subject", missing)
 
                 oca = split(e["ontologyConceptArr"], " ")
                 for c in oca
-                    push!(results_df, [n, missing, parse(c), pos_start, pos_end, missing,
+                    push!(results_df, [n, missing, parse(Int, c), pos_start, pos_end, missing,
                                        negated, missing, missing, missing, missing, confidence,
                                        uncertainty, conditional, generic, subject ])
                 end
@@ -119,9 +122,9 @@ function parse_output_v4(file_in)
             scheme = get(e, "codingScheme", missing)
             cui = get(e, "cui", missing)
             text = get(e, "preferredText", missing)
-            id = parse(get(e, "xmi:id", missing))
+            id = parse(Int, get(e, "xmi:id", missing))
             tui = get(e, "tui", missing)
-            score = parse(get(e, "score", missing))
+            score = parse(Float64, get(e, "score", missing))
 
 
             # results_df[results_df[:id].== id, [:refsem, :cui, :preferred_text, :scheme]] = []
@@ -136,8 +139,8 @@ function parse_output_v4(file_in)
         if namespace(e) == "http:///org/apache/ctakes/typesystem/type/syntax.ecore"
            if nodename(e) == "ConllDependencyNode" && e["id"] != "0"
                postag = get(e, "postag", missing)
-               pos_start = parse(get(e, "begin", missing))
-               pos_end = parse(get(e, "end", missing))
+               pos_start = parse(Int, get(e, "begin", missing))
+               pos_end = parse(Int, get(e, "end", missing))
                text = get(e, "form", missing)
 
                push!(pos_df, [pos_start, pos_end, postag, text])
