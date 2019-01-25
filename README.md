@@ -9,7 +9,8 @@ Julia utilities to parse the output of cTAKES 4.0
 ## Installation
 
 ```
-Pkg.clone("https://github.com/bcbi/CTakesParser.jl.git")
+using Pkg
+Pkg.add("https://github.com/bcbi/CTakesParser.jl.git")
 ```
 
 ## Examples
